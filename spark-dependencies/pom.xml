@@ -36,11 +36,7 @@
   
 
   <properties>
-    <spark.version>1.4.1</spark.version>
-    <scala.version>2.10.4</scala.version>
-    <scala.binary.version>2.10</scala.binary.version>
 
-    <hadoop.version>2.3.0</hadoop.version>
     <yarn.version>${hadoop.version}</yarn.version>
     <avro.version>1.7.7</avro.version>
     <avro.mapred.classifier></avro.mapred.classifier>
@@ -48,8 +44,7 @@
     <protobuf.version>2.4.1</protobuf.version>
 
     <akka.group>org.spark-project.akka</akka.group>
-    <akka.version>2.3.4-spark</akka.version>
-
+    <akka.version>2.3.4</akka.version>
     <spark.download.url>http://archive.apache.org/dist/spark/spark-${spark.version}/spark-${spark.version}.tgz</spark.download.url>
     <py4j.version>0.8.2.1</py4j.version>
   </properties>
@@ -244,7 +239,7 @@
     <!-- Spark -->
     <dependency>
       <groupId>org.apache.spark</groupId>
-      <artifactId>spark-core_2.10</artifactId>
+      <artifactId>spark-core_${scala.binary.version}</artifactId>
       <version>${spark.version}</version>
       <exclusions>
         <exclusion>
@@ -256,33 +251,33 @@
 
     <dependency>
       <groupId>org.apache.spark</groupId>
-      <artifactId>spark-repl_2.10</artifactId>
+      <artifactId>spark-repl_${scala.binary.version}</artifactId>
       <version>${spark.version}</version>
     </dependency>
 
     <dependency>
       <groupId>org.apache.spark</groupId>
-      <artifactId>spark-sql_2.10</artifactId>
+      <artifactId>spark-sql_${scala.binary.version}</artifactId>
       <version>${spark.version}</version>
     </dependency>
 
     <dependency>
       <groupId>org.apache.spark</groupId>
-      <artifactId>spark-hive_2.10</artifactId>
-      <version>${spark.version}</version>
-    </dependency>
-
-
-    <dependency>
-      <groupId>org.apache.spark</groupId>
-      <artifactId>spark-streaming_2.10</artifactId>
+      <artifactId>spark-hive_${scala.binary.version}</artifactId>
       <version>${spark.version}</version>
     </dependency>
 
 
     <dependency>
       <groupId>org.apache.spark</groupId>
-      <artifactId>spark-streaming-twitter_2.10</artifactId>
+      <artifactId>spark-streaming_${scala.binary.version}</artifactId>
+      <version>${spark.version}</version>
+    </dependency>
+
+
+    <dependency>
+      <groupId>org.apache.spark</groupId>
+      <artifactId>spark-streaming-twitter_${scala.binary.version}</artifactId>
       <version>${spark.version}</version>
     </dependency>
 
@@ -481,6 +476,7 @@
       <id>spark-1.5</id>
       <properties>
         <spark.version>1.5.2</spark.version>
+<<<<<<< HEAD
         <akka.group>com.typesafe.akka</akka.group>
         <akka.version>2.3.11</akka.version>
         <protobuf.version>2.5.0</protobuf.version>
@@ -494,6 +490,8 @@
       <id>cassandra-spark-1.5</id>
       <properties>
         <spark.version>1.5.1</spark.version>
+=======
+>>>>>>> 6717c80... Preparing to rebase
         <akka.group>com.typesafe.akka</akka.group>
         <akka.version>2.3.11</akka.version>
         <protobuf.version>2.5.0</protobuf.version>
@@ -717,7 +715,7 @@
       <dependencies>
         <dependency>
           <groupId>org.apache.spark</groupId>
-          <artifactId>spark-yarn_2.10</artifactId>
+          <artifactId>spark-yarn_${scala.binary.version}</artifactId>
           <version>${spark.version}</version>
         </dependency>
 
