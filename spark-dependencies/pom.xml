@@ -476,7 +476,6 @@
       <id>spark-1.5</id>
       <properties>
         <spark.version>1.5.2</spark.version>
-<<<<<<< HEAD
         <akka.group>com.typesafe.akka</akka.group>
         <akka.version>2.3.11</akka.version>
         <protobuf.version>2.5.0</protobuf.version>
@@ -489,9 +488,7 @@
     <profile>
       <id>cassandra-spark-1.5</id>
       <properties>
-        <spark.version>1.5.1</spark.version>
-=======
->>>>>>> 6717c80... Preparing to rebase
+        <spark.version>1.5.2</spark.version>
         <akka.group>com.typesafe.akka</akka.group>
         <akka.version>2.3.11</akka.version>
         <protobuf.version>2.5.0</protobuf.version>
