@@ -71,6 +71,9 @@
       <directory>../conf</directory>
     </fileSet>
     <fileSet>
+      <directory>../R</directory>
+    </fileSet>
+    <fileSet>
       <directory>../interpreter</directory>
     </fileSet>
     <fileSet>

@@ -88,6 +88,7 @@
     <module>zeppelin-zengine</module>
     <module>spark-dependencies</module>
     <module>spark</module>
+    <module>r</module>
     <module>markdown</module>
     <module>angular</module>
     <module>shell</module>
@@ -112,9 +113,15 @@
     <gson.version>2.2</gson.version>
     <guava.version>15.0</guava.version>
 
-    <PermGen>64m</PermGen>
+    <PermGen>128m</PermGen>
     <MaxPermGen>512m</MaxPermGen>
-  </properties>
+  <spark.version>1.4.1</spark.version>
+  <scala.version>2.10.4</scala.version>
+  <scala.binary.version>2.10</scala.binary.version>
+
+  <hadoop.version>2.3.0</hadoop.version>
+  <py4j.version>0.8.2.1</py4j.version>
+</properties>
 
   <dependencyManagement>
     <dependencies>
@@ -427,6 +434,7 @@
               <exclude>**/*.keywords</exclude>
               <exclude>**/.idea/</exclude>
               <exclude>**/*.iml</exclude>
+              <exclude>R/**</exclude>
               <exclude>.git/</exclude>
               <exclude>.gitignore</exclude>
               <exclude>.repository/</exclude>
@@ -623,7 +631,6 @@
         <module>geode</module>
       </modules>
     </profile>
-
     <profile>
       <id>build-distr</id>
       <activation>

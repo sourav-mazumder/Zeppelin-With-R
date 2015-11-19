@@ -30,7 +30,6 @@ import java.util.*;
 
 import com.google.common.base.Joiner;
 
-import org.apache.spark.HttpServer;
 import org.apache.spark.SparkConf;
 import org.apache.spark.SparkContext;
 import org.apache.spark.SparkEnv;
@@ -41,7 +40,6 @@ import org.apache.spark.repl.SparkJLineCompletion;
 import org.apache.spark.scheduler.ActiveJob;
 import org.apache.spark.scheduler.DAGScheduler;
 import org.apache.spark.scheduler.Pool;
-import org.apache.spark.scheduler.SparkListener;
 import org.apache.spark.sql.SQLContext;
 import org.apache.spark.ui.jobs.JobProgressListener;
 import org.apache.zeppelin.interpreter.Interpreter;
@@ -261,23 +259,12 @@ public class SparkInterpreter extends Interpreter {
 
     String classServerUri = null;
 
-    try { // in case of spark 1.1x, spark 1.2x
-      Method classServer = interpreter.intp().getClass().getMethod("classServer");
-      HttpServer httpServer = (HttpServer) classServer.invoke(interpreter.intp());
-      classServerUri = httpServer.uri();
+    try { // for spark 1.3x
+      Method classServer = interpreter.intp().getClass().getMethod("classServerUri");
+      classServerUri = (String) classServer.invoke(interpreter.intp());
     } catch (NoSuchMethodException | SecurityException | IllegalAccessException
-        | IllegalArgumentException | InvocationTargetException e) {
-      // continue
-    }
-
-    if (classServerUri == null) {
-      try { // for spark 1.3x
-        Method classServer = interpreter.intp().getClass().getMethod("classServerUri");
-        classServerUri = (String) classServer.invoke(interpreter.intp());
-      } catch (NoSuchMethodException | SecurityException | IllegalAccessException
-          | IllegalArgumentException | InvocationTargetException e) {
-        throw new InterpreterException(e);
-      }
+      | IllegalArgumentException | InvocationTargetException e) {
+      throw new InterpreterException("Failed to get a classServerUri" + e.toString());
     }
 
     SparkConf conf =
@@ -295,6 +282,10 @@ public class SparkInterpreter extends Interpreter {
     }
     if (System.getenv("SPARK_HOME") != null) {
       conf.setSparkHome(System.getenv("SPARK_HOME"));
+    } else {
+      throw new InterpreterException("SPARK_HOME is not set." +
+              "The SparkInterpreter needs SPARK_HOME to find Spark." +
+              "The SparkInterpreter will now shutdown.");
     }
     conf.set("spark.scheduler.mode", "FAIR");
 
@@ -304,13 +295,16 @@ public class SparkInterpreter extends Interpreter {
       String key = (String) k;
       String val = toString(intpProperty.get(key));
       if (!key.startsWith("spark.") || !val.trim().isEmpty()) {
+        if (key == "home") throw new InterpreterException("Detected spark.home set. " +
+                "The Spark home must be set with SPARK_HOME, not spark.home." +
+                "The SparkInterpreter will now shutdown.");
         logger.debug(String.format("SparkConf: key = [%s], value = [%s]", key, val));
         conf.set(key, val);
       }
     }
 
     //TODO(jongyoul): Move these codes into PySparkInterpreter.java
-    String pysparkBasePath = getSystemDefault("SPARK_HOME", "spark.home", null);
+    String pysparkBasePath = getSystemDefault("SPARK_HOME", null, null);
     File pysparkPath;
     if (null == pysparkBasePath) {
       pysparkBasePath = getSystemDefault("ZEPPELIN_HOME", "zeppelin.home", "../");
@@ -332,9 +326,7 @@ public class SparkInterpreter extends Interpreter {
     pythonLibUris.trimToSize();
     if (pythonLibs.length == pythonLibUris.size()) {
       conf.set("spark.yarn.dist.files", Joiner.on(",").join(pythonLibUris));
-      if (!useSparkSubmit()) {
-        conf.set("spark.files", conf.get("spark.yarn.dist.files"));
-      }
+      conf.set("spark.files", conf.get("spark.yarn.dist.files"));
       conf.set("spark.submit.pyArchives", Joiner.on(":").join(pythonLibs));
     }
 
@@ -345,10 +337,6 @@ public class SparkInterpreter extends Interpreter {
 
   static final String toString(Object o) {
     return (o instanceof String) ? (String) o : "";
-  }
-
-  private boolean useSparkSubmit() {
-    return null != System.getenv("SPARK_SUBMIT");
   }
 
   public static String getSystemDefault(
