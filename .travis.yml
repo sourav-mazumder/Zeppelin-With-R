@@ -44,11 +44,6 @@ script:
   - echo "export SPARK_HOME=`pwd`/spark-1.5.2-bin-hadoop2.3" > conf/zeppelin-env.sh
   - mvn verify -Pusing-packaged-distr -Phadoop-2.3 -Ppyspark -B -Pspark-1.5
   - ./testing/stopSparkCluster.sh 1.5.2 2.3
-# spark 1.4
-  - /bin/bash ./dev/travis/travis-install.sh `pwd` mvn package -Pbuild-distr -Phadoop-2.3 -Ppyspark -B -Pspark-1.4
-  - ./testing/startSparkCluster.sh 1.4.0 2.3
-  - /bin/bash ./dev/travis/travis-install.sh `pwd` mvn verify -Pusing-packaged-distr -Phadoop-2.3 -Ppyspark -B -Pspark-1.4
-  - ./testing/stopSparkCluster.sh 1.4.0 2.3
 
 after_failure:
   - cat target/rat.txt
