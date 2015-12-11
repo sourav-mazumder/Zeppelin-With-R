@@ -57,9 +57,9 @@ For general instructions on installing Zeppelin, see [https://github.com/apache/
 To install this build of Zeppelin with the R interpreter, after installing dependencies, execute:
 
 ```
-git clone -b rinterpreter https://github.com/elbamos/incubator-zeppelin.git
-cd incubator-zeppelin
-mvn package install -Pspark-1.5 -DskipTests
+git clone https://github.com/elbamos/Zeppelin-With-R.git
+cd Zeppelin-With-R
+mvn package install -DskipTests
 ```
 
 To run Zeppelin with the R Interpreter, zeppelin must be started with the SPARK_HOME environment variable properly set. The best way to do this is from `conf/zeppelin-env.sh`. 
