@@ -2,6 +2,8 @@
 
 This is a the Apache (incubating) Zeppelin project, with the addition of support for the R programming language and R-spark integration.
 
+This has been accepted as a pull request to the Zeppelin project, and will be integrated once Zeppelin's automated testing system is updated to support it. 
+
 ## Why is This a Big Deal for Data Scientists?
 
 Because it allows you to combine R, scala, and Python in a single, seamless, data/machine-learning pipeline, on-the-fly, on ad-hoc clusters, from a simple, integrated, interface. 
@@ -62,7 +64,7 @@ cd Zeppelin-With-R
 mvn package install -DskipTests
 ```
 
-To run Zeppelin with the R Interpreter, zeppelin must be started with the SPARK_HOME environment variable properly set. The best way to do this is from `conf/zeppelin-env.sh`. 
+To run Zeppelin with the R Interpreter, zeppelin must be started with the SPARK_HOME environment variable properly set. The best way to do this is by editing `conf/zeppelin-env.sh`. 
 
 You should also copy `conf/zeppelin-site.xml.template` to `conf/zeppelin-site.xml`.  That will ensure that Zeppelin sees the R Interpreter the first time it starts up. 
 
@@ -86,7 +88,7 @@ To run the notebook properly the following additional packages should be install
  * `googleVis`
  * `rCharts`
  
- The notebook is not intended to be part of the submission. 
+The notebook is not intended to be part of the submission. 
 
 ## Using the R Interpreter
 
@@ -115,7 +117,7 @@ The two interpreters share the same environment.  If you define a variable from 
 
 ## Using SparkR
 
-If SPARK_HOME is set, the SparkR package will be loaded automatically.
+If `SPARK_HOME` is set, the `SparkR` package will be loaded automatically.
  
 The Spark Context and SQL Context are created and injected into the local environment automatically as `sc` and `sql`.
 
@@ -133,7 +135,7 @@ An example of this is shown in the RInterpreter example notebook.
 
 In addition, the Zeppelin Context allows you to move variables from one interpreter to another.  
 
-You can `put` a variable from one language, by name, and `get` it from another language. 
+The Zeppelin Context is a dictionary of variables shared by multiple Zeppelin interpreters.  You can `put()` a variable into the context from one language, and `get()` it using another language. 
 
 In the R Interpreter, the Zeppelin context can be called with `.z.put(name, object)` and `.z.get(name)`.  
 
@@ -157,13 +159,17 @@ For interactive visualization, `googleVis` works and `rCharts` works.
 
 A major difference between `knitr` and `rmarkdown` is that `rmarkdown` uses `pandoc`, an application external to R.
 
-`pandoc` is what does the work of pulling-in dependencies like javascript and css that are needed for `htmlwidgets` and some other visualizations. 
+`htmlwidgets` produces HTML that references dependencies, javacript and css files, that in turn reference other dependencies. 
 
-To use `pandoc`, though, `rmarkdown` has to write everything to disc then call `pandoc`, which also writes its output to disc. 
+In `rmarkdown`, `pandoc` processes these dependencies, pulling-in and incorporating the referenced code into a single, self-contained HTML file. 
+
+To use `pandoc`, though, `rmarkdown` writes everything to disc, then calls `pandoc` as an external process, then reads `pandoc`'s output back from disc.  
 
 `knitr`, on the other hand, can operate entirely (or almost entirely) in RAM. 
 
 Its the difference between getting a result in a second, and getting a result in a minimum of a minute.  
+
+After testing, I felt the additional delay would be intolerable for most users and therefore chose to use `knitr` instead of `rmarkdown`.
 
 I would like to support `htmlwidgets` and have done some work on code to handle dependencies, but it is a non-trivial task.
 
@@ -171,7 +177,7 @@ If there is really substantial interest, it isn't *too* challenging to add a `%s
 
 ### Why no `ggvis` or `shiny`?
 
-Supporting `shiny` would require integrating a reverse-proxy into Zeppelin, which is something of a task. 
+Supporting `shiny` would require integrating a reverse-proxy into Zeppelin, which is a task. 
 
 ### But I really want to use `ggvis` and `shiny`!!!!
 
@@ -195,7 +201,7 @@ The solution is to install on a case-sensitive file system, don't run `mvn clean
 
 Zeppelin does not support Windows, therefore the R Interpreter does not support Windows. 
 
-Some early versions of the code attempted to talk to Windows.  No-one managed to get it to work, so I took the support out entirely.
+Some early versions of the code attempted to talk to Windows.  No-one managed to get it to work, but it generated lots of support complaints that I couldn't resolve, so I took support out entirely.
 
 ### I'm Getting Weird Errors About the akka Library Version or `TTransport` Errors
 
@@ -205,9 +211,9 @@ This is an issue with the core Zeppelin build, and not one I can fix.  The only 
 
 ### The R Interpreter Does Make a Spark Context and it Says It Can't Find SparkR, but Everything Else Works
 
-You don't have SPARK_HOME set properly, or you have the spark.home Zeppelin configuration variable set. 
+You don't have `SPARK_HOME` set properly, or you have the `spark.home` Zeppelin configuration variable set. 
 
-Because the version of `SparkR` has to match the version of Spark, the R Interpreter only looks for `SparkR` under SPARK_HOME. 
+Because the version of `SparkR` has to match the version of Spark, the R Interpreter only looks for `SparkR` under `SPARK_HOME`. 
 
 If it can't find `SparkR` there, unless there is a `SparkR` in the R library path, the R Interpreter will not be able to connect to the Spark Context. 
 
@@ -217,16 +223,12 @@ Like I said, the Zeppelin-Spark interface has changed in major ways repeatedly, 
 
 I no longer attempt to support all of the Spark configuration options supported by Zeppelin for this reason. 
 
-I support only one, which is running with SPARK_HOME set, and spark.home unset. 
+I support only one, which is running with `SPARK_HOME` set, and `spark.home` unset. 
 
 ### Will This Fork Track Zeppelin-Master?
 
 No. At least, I won't promise that it will. 
 
-I intend to track all Zeppelin releases.  And I will periodically rebase Zeppelin-Master into the code.  But I won't promise to track Zeppelin-Master consistently. 
+My original intent was to track Zeppelin releases.
 
-### Why Fork Zeppelin?
-
-The R Interpreter continues to be a pending pull request that is under discussion within the Zeppelin community. 
-
-I hope that it will be acted-upon soon.  
+It is likely, though, that the PR will be fully incorporated before the next release. 
