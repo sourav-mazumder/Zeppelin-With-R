@@ -95,8 +95,6 @@ object RInterpreter {
 
   // These are the additional properties we need on top of the ones provided by the spark interpreters
   lazy val props: Map[String, InterpreterProperty] = new InterpreterPropertyBuilder()
-    .add("spark.home",            SparkInterpreter.getSystemDefault("spark.home", "SPARK_HOME", ""),"Spark home path. Should be provided for SparkR")
-    .add("r.home",                SparkInterpreter.getSystemDefault("r.home","R_HOME", "/usr/lib/R/"), "R home path.")
     .add("rhadoop.cmd",           SparkInterpreter.getSystemDefault("rhadoop.cmd", "HADOOP_CMD", ""), "Usually /usr/bin/hadoop")
     .add("rhadooop.streamingjar", SparkInterpreter.getSystemDefault("rhadoop.cmd", "HADOOP_STREAMING", ""), "Usually /usr/lib/hadoop/contrib/streaming/hadoop-streaming-<version>.jar")
     .add("rscala.debug",          SparkInterpreter.getSystemDefault("rscala.debug","RSCALA_DEBUG", "false"), "Whether to turn on rScala debugging") // TEST:  Implemented but not tested
