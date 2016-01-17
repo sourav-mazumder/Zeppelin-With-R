@@ -54,7 +54,7 @@ For full R support, you will also need the following R packages:
 
 To install this build of Zeppelin with the R interpreter, after installing dependencies, execute:
 
-```
+```sh
 git clone https://github.com/elbamos/Zeppelin-With-R.git
 cd Zeppelin-With-R
 mvn package install -DskipTests
@@ -66,7 +66,7 @@ You should also copy `conf/zeppelin-site.xml.template` to `conf/zeppelin-site.xm
 
 To start Zeppelin, from the Zeppelin installation folder:
 
-```
+```sh
 bin/zeppelin.sh # to start zeppelin or
 bin/zeppelin-daemon.sh # to start zeppelin as a daemon
 ```
@@ -189,7 +189,7 @@ The solution is to install on a case-sensitive file system, don't run `mvn clean
 
 Check your shell login scripts, usually `.bashrc` and `.bash_profile`.  If you see something like this:
 
-```
+```sh
 dispdir=`dirname $DISPLAY`
 dispfile=`basename $DISPLAY`
 dispnew="$dispdir/:0"
