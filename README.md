@@ -35,26 +35,22 @@ Together, these capabilities mean that a Spark cluster can be part of an ordinar
 **Documentation:** [User Guide](http://zeppelin.incubator.apache.org/docs/index.html)<br/>
 
 To know more about Zeppelin, visit [http://zeppelin.incubator.apache.org](http://zeppelin.incubator.apache.org)
-
-## Requirements
- * Java 1.7
- * Tested on Mac OSX, Ubuntu 14.X, CentOS 6.X
- * Maven (if you want to build from the source code)
- * Node.js Package Manager
- * Spark 1.4 or 1.5
- * R 3.1 or later (earlier versions may work, but have not been tested)
- * The `evaluate` R package. 
- 
-For full R support and to view the demo notebook, you will also need the following R packages:
- 
- * `knitr`
- * `repr` -- available with `devtools::install_github("IRkernel/repr")`
- * `htmltools`
- * `base64enc`
  
 ## Installation & Getting Started
 
 For general instructions on installing Zeppelin, see [https://github.com/apache/incubator-zeppelin](https://github.com/apache/incubator-zeppelin).
+
+Additional requirements for the R interpreter are:
+
+ * R 3.1 or later (earlier versions may work, but have not been tested)
+ * The `evaluate` R package. 
+ 
+For full R support, you will also need the following R packages:
+ 
+ * `knitr` 
+ * `repr` -- available with `devtools::install_github("IRkernel/repr")`
+ * `htmltools` -- required for some interactive plotting
+ * `base64enc` -- required to view R base plots
 
 To install this build of Zeppelin with the R interpreter, after installing dependencies, execute:
 
@@ -74,21 +70,6 @@ To start Zeppelin, from the Zeppelin installation folder:
 bin/zeppelin.sh # to start zeppelin or
 bin/zeppelin-daemon.sh # to start zeppelin as a daemon
 ```
-
-## Running the Demo Notebook
-
-There is an RInterpreter notebook included.  This is intended for for two groups of people:
-
-* Members of the Zeppelin community who are reviewing the pull request for inclusion, to show them how the R interpreter works. 
-* Members of the R community who are not familiar with Zeppelin and may be interested in the R interpreter and Zeppelin for their projects. 
-
-To run the notebook properly the following additional packages should be installed:
-
- * `devtools`
- * `googleVis`
- * `rCharts`
- 
-The notebook is not intended to be part of the submission. 
 
 ## Using the R Interpreter
 
@@ -135,6 +116,20 @@ And vice versa:
 [![varscala](screenshots/varr1.png)](screenshots/varscala.png)
 [![varr2](screenshots/varr2.png)](screenshots/varr2.png)
 
+## Running the Demo Notebook
+
+There is an RInterpreter notebook included.  This is intended for for two groups of people:
+
+* Members of the Zeppelin community who are reviewing the pull request for inclusion, to show them how the R interpreter works. 
+* Members of the R community who are not familiar with Zeppelin and may be interested in the R interpreter and Zeppelin for their projects. 
+
+To run the notebook properly the following additional packages should be installed:
+
+ * `devtools`
+ * `googleVis`
+ * `rCharts`
+ 
+The notebook is not intended to be part of the submission. 
 
 **Caveats**:
 
@@ -206,13 +201,6 @@ export DISPLAY=$dispnew
 
 delete it or comment it out.  Shell scripting like this is a workaround for using X Windows over ssh on operating systems (certain versions of Mac OS X) that don't set the `DISPLAY` environment variable properly.  However, it interferes with a workaround for the same issue built into R. 
 
-
-### What about Windows?
-
-Zeppelin does not support Windows, therefore the R Interpreter does not support Windows. 
-
-Some early versions of the code attempted to talk to Windows.  No-one managed to get it to work, but it generated lots of support complaints that I couldn't resolve, so I took support out entirely.
-
 ### "I'm Getting Weird Errors About the akka Library Version or `TTransport` Errors"
 
 You are trying to run Zeppelin with a SPARK_HOME that has a version of Spark other than the one specified with `-Pspark-1.x` when Zeppelin was compiled.
@@ -237,8 +225,10 @@ I support only one, which is running with `SPARK_HOME` set, and `spark.home` uns
 
 ### Will This Fork Track Zeppelin-Master?
 
-No. At least, I won't promise that it will. 
+It has already diverged.  
 
-My original intent was to track Zeppelin releases.
+For one thing, a different method for supporting Spark 1.6 is used.  In addition, the less-often-used interpreters are not enabled by default.  
 
-It is likely, though, that the PR will be fully incorporated before the next release. 
+### What about Windows?
+
+Zeppelin does not support Windows, therefore the R Interpreter does not support Windows.  Some people have gotten it to work using docker.  
