@@ -220,15 +220,7 @@ private[rinterpreter] class RContext(private val sockets: ScalaSockets,
     logger.info("Proof of spark is : " + proof.mkString)
 
     RStatics.setZ(z)
-    eval(
-    s"""
-       |assign(".zeppelinContext",
-       |  SparkR:::callJStatic("org.apache.zeppelin.rinterpreter.RStatics",
-       | "getZ"),
-       | envir = .GlobalEnv)
-     """.stripMargin
-    )
-    logger.debug("Set the ZeppelinContext")
+    logger.info("Set zeppelin context " + z)
 
     RStatics.setrCon(this)
     eval(

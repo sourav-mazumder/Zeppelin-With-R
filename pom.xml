@@ -34,7 +34,7 @@
   <groupId>org.apache.zeppelin</groupId>
   <artifactId>zeppelin</artifactId>
   <packaging>pom</packaging>
-  <version>0.5.5-incubating</version>
+  <version>0.5.6-incubating-SNAPSHOT</version>
   <name>Zeppelin</name>
   <description>Zeppelin project</description>
   <url>http://zeppelin.incubator.apache.org/</url>
@@ -57,7 +57,7 @@
     <url>https://git-wip-us.apache.org/repos/asf/incubator-zeppelin.git</url>
     <connection>scm:git:https://git-wip-us.apache.org/repos/asf/incubator-zeppelin.git</connection>
     <developerConnection>scm:git:https://git-wip-us.apache.org/repos/asf/incubator-zeppelin.git</developerConnection>
-    <tag>v0.5.5</tag>
+    <tag>v0.5.6</tag>
   </scm>
 
   <developers>
@@ -101,6 +101,7 @@
     <module>kylin</module>
     <module>lens</module>
     <module>cassandra</module>
+    <module>elasticsearch</module>
     <module>zeppelin-web</module>
     <module>zeppelin-server</module>
     <module>zeppelin-distribution</module>
@@ -115,12 +116,12 @@
 
     <PermGen>128m</PermGen>
     <MaxPermGen>512m</MaxPermGen>
-  <spark.version>1.4.1</spark.version>
-  <scala.version>2.10.4</scala.version>
-  <scala.binary.version>2.10</scala.binary.version>
+    <spark.version>1.5.2</spark.version>
+    <scala.version>2.10.4</scala.version>
+    <scala.binary.version>2.10</scala.binary.version>
 
-  <hadoop.version>2.3.0</hadoop.version>
-  <py4j.version>0.8.2.1</py4j.version>
+    <hadoop.version>2.3.0</hadoop.version>
+    <py4j.version>0.8.2.1</py4j.version>
 </properties>
 
   <dependencyManagement>
@@ -432,6 +433,7 @@
           <configuration>
             <excludes>
               <exclude>**/*.keywords</exclude>
+              <exclude>reports/**</exclude>
               <exclude>**/.idea/</exclude>
               <exclude>**/*.iml</exclude>
               <exclude>R/**</exclude>
@@ -458,6 +460,7 @@
               <exclude>**/notebook/**</exclude>
               <exclude>_tools/site/css/*</exclude>
               <exclude>**/README.md</exclude>
+              <exclude>DEPENDENCIES</exclude>
               <exclude>DEPLOY.md</exclude>
               <exclude>CONTRIBUTING.md</exclude>
               <exclude>STYLE.md</exclude>
@@ -488,10 +491,38 @@
               <exclude>docs/Rakefile</exclude>
               <exclude>docs/rss.xml</exclude>
               <exclude>docs/sitemap.txt</exclude>
-              
+
               <!-- bundled from jekyll -->
               <exclude>docs/assets/themes/zeppelin/css/syntax.css</exclude>
-              
+
+              <!-- docs (website) build target dir -->
+              <exclude>docs/_site/**</exclude>
+              <exclude>docs/Gemfile.lock</exclude>
+
+              <!-- bundled from bootstrap -->
+              <exclude>docs/assets/themes/zeppelin/bootstrap/**</exclude>
+              <exclude>docs/assets/themes/zeppelin/css/style.css</exclude>
+              <exclude>docs/_includes/themes/zeppelin/_jumbotron.html</exclude>
+              <exclude>docs/_includes/themes/zeppelin/_navigation.html</exclude>
+
+              <!-- bundled from jekyll-bootstrap -->
+              <exclude>docs/404.html</exclude>
+              <exclude>docs/_config.yml</exclude>
+              <exclude>docs/_includes/JB/**</exclude>
+              <exclude>docs/_layouts/**</exclude>
+              <exclude>docs/_plugins/**</exclude>
+              <exclude>docs/atom.xml</exclude>
+              <exclude>docs/_includes/themes/zeppelin/default.html</exclude>
+              <exclude>docs/_includes/themes/zeppelin/page.html</exclude>
+              <exclude>docs/_includes/themes/zeppelin/post.html</exclude>
+              <exclude>docs/_includes/themes/zeppelin/settings.yml</exclude>
+              <exclude>docs/Rakefile</exclude>
+              <exclude>docs/rss.xml</exclude>
+              <exclude>docs/sitemap.txt</exclude>
+
+              <!-- bundled from jekyll -->
+              <exclude>docs/assets/themes/zeppelin/css/syntax.css</exclude>
+
               <!-- docs (website) build target dir -->
               <exclude>docs/_site/**</exclude>
               <exclude>docs/Gemfile.lock</exclude>
@@ -631,6 +662,14 @@
         <module>geode</module>
       </modules>
     </profile>
+
+    <profile>
+      <id>scalding</id>
+      <modules>
+        <module>scalding</module>
+      </modules>
+    </profile>
+
     <profile>
       <id>build-distr</id>
       <activation>
@@ -691,7 +730,7 @@
         <plugins>
           <plugin>
             <artifactId>maven-gpg-plugin</artifactId>
-            <version>1.4</version>
+            <version>1.6</version>
             <executions>
               <execution>
                 <id>sign-artifacts</id>
@@ -706,4 +745,5 @@
       </build>
     </profile>
   </profiles>
+
 </project>

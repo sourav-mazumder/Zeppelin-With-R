@@ -63,8 +63,12 @@ public class RStatics {
     return sql;
   }
 
-  public static ZeppelinContext getZ() {
-    return z;
+  public static Object getZ(String name) {
+    return z.get(name);
+  }
+
+  public static void putZ(String name, Object obj) {
+    z.put(name, obj);
   }
 
   public static RContext getRCon() {

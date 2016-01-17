@@ -40,7 +40,8 @@
 	input = input,
 	envir =.zeppenv,
 	debug = FALSE,
-	output_handler =.z.ohandler
+	output_handler =.z.ohandler,
+	stop_on_error = 0
 )
 
 # converts data.tables to the format needed for display in zeppelin
@@ -80,17 +81,17 @@
 
 .z.get <- function(name) {
   isRDD <- SparkR:::callJStatic("org.apache.zeppelin.rinterpreter.RStatics", "testRDD", name)
-  obj <- SparkR:::callJMethod(.zeppelinContext, "get", name)
+  obj <- SparkR:::callJStatic("org.apache.zeppelin.rinterpreter.RStatics", "getZ", name)
   if (isRDD) SparkR:::RDD(obj)
   else obj
  }
 
 .z.put <- function(name, object) {
   if ("RDD" %in% class(object)) object <- SparkR:::getJRDD(object)
-  SparkR:::callJMethod(.zeppelinContext, "put", name, object)
+  SparkR:::callJStatic("org.apache.zeppelin.rinterpreter.RStatics", "putZ", name, object)
  }
 
- .z.repr <- function(x) {
+.z.repr <- function(x) {
     if (require(repr)) repr:::repr(x)
     else toString(x)
  }

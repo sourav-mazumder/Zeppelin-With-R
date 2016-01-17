@@ -153,7 +153,7 @@ For interactive visualization, `googleVis` works and `rCharts` works.
 
 `htmlwidgets` does not work.  Neither does `shiny` or `ggvis.` 
 
-## FAQs
+## FAQs & Troubleshooting
 
 ### Why `knitr` Instead of `rmarkdown`?  Why no `htmlwidgets`?
 
@@ -197,13 +197,30 @@ If your filesystem is case-insensitive, then when you run `mvn clean`, you may e
 
 The solution is to install on a case-sensitive file system, don't run `mvn clean` or, if you do, be prepared to re-clone or re-fetch the source. 
 
+### "When I try to use the REPL interpreter, I get an error `unable to start device X11` but I'm not even using X11"
+
+Check your shell login scripts, usually `.bashrc` and `.bash_profile`.  If you see something like this:
+
+```
+dispdir=`dirname $DISPLAY`
+dispfile=`basename $DISPLAY`
+dispnew="$dispdir/:0"
+if [ -e $DISPLAY -a "$dispfile" = "org.x:0" ]; then
+  mv $DISPLAY $dispnew
+fi
+export DISPLAY=$dispnew
+```
+
+delete it or comment it out.  Shell scripting like this is a workaround for using X Windows over ssh on operating systems (certain versions of Mac OS X) that don't set the `DISPLAY` environment variable properly.  However, it interferes with a workaround for the same issue built into R. 
+
+
 ### What about Windows?
 
 Zeppelin does not support Windows, therefore the R Interpreter does not support Windows. 
 
 Some early versions of the code attempted to talk to Windows.  No-one managed to get it to work, but it generated lots of support complaints that I couldn't resolve, so I took support out entirely.
 
-### I'm Getting Weird Errors About the akka Library Version or `TTransport` Errors
+### "I'm Getting Weird Errors About the akka Library Version or `TTransport` Errors"
 
 You are trying to run Zeppelin with a SPARK_HOME that has a version of Spark other than the one specified with `-Pspark-1.x` when Zeppelin was compiled.
 

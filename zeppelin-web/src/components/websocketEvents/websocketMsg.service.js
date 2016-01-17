@@ -32,8 +32,13 @@ angular.module('zeppelinWebApp').service('websocketMsgSrv', function($rootScope,
     cloneNotebook: function(noteIdToClone, newNoteName ) {
       websocketEvents.sendNewEvent({op: 'CLONE_NOTE', data: {id: noteIdToClone, name: newNoteName}});
     },
+
     getNotebookList: function() {
       websocketEvents.sendNewEvent({op: 'LIST_NOTES'});
+    },
+
+    reloadAllNotesFromRepo: function() {
+      websocketEvents.sendNewEvent({op: 'RELOAD_NOTES_FROM_REPO'});
     },
 
     getNotebook: function(noteId) {
@@ -109,6 +114,15 @@ angular.module('zeppelinWebApp').service('websocketMsgSrv', function($rootScope,
           paragraph: paragraphData,
           config: paragraphConfig,
           params: paragraphParams
+        }
+      });
+    },
+
+    importNotebook: function(notebook) {
+      websocketEvents.sendNewEvent({
+        op: 'IMPORT_NOTE',
+        data: {
+          notebook: notebook
         }
       });
     },
