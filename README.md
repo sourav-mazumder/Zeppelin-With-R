@@ -94,18 +94,47 @@ The notebook is not intended to be part of the submission.
 
 By default, the R Interpreter appears as two Zeppelin Interpreters, `%spark.r` and `%spark.knitr`. 
 
-`%spark.r` will behave like an ordinary REPL.  You can execute commands as in the CLI.  Plots will be returned as images embedded in the page. 
+`%spark.r` will behave like an ordinary REPL.  You can execute commands as in the CLI.   
 
-If you return a data.frame, Zeppelin will attempt to display it using Zeppelin's visualization tools. 
+[![2+2](screenshots/repl2plus2.png)](screenshots/repl2plus2.png)
 
-`%spark.knitr` interfaces directly against `knitr`, with chunk options on the first line.  Like this:
+R base plotting is fully supported
 
-```
-> %sparkr.knitr aknitrchunkname,echo=F,eval=T
-hist(rnorm(100))
-```
+[![replhist](screenshots/replhist.png)](screenshots/replhist.png)
+
+If you return a data.frame, Zeppelin will attempt to display it using Zeppelin's built-in visualizations. 
+
+[![replhist](screenshots/replhead.png)](screenshots/replhead.png)
+
+`%spark.knitr` interfaces directly against `knitr`, with chunk options on the first line:
+
+[![knitgeo](screenshots/knitgeo.png)](screenshots/knitgeo.png)
+[![knitstock](screenshots/knitstock.png)](screenshots/knitstock.png)
+[![knitmotion](screenshots/knitmotion.png)](screenshots/knitmotion.png)
 
 The two interpreters share the same environment.  If you define a variable from `%spark.r`, it will be within-scope if you then make a call using `%spark.knitr`.
+
+## Using SparkR & Moving Between Languages
+
+If `SPARK_HOME` is set, the `SparkR` package will be loaded automatically:
+
+[![sparkrfaithful](screenshots/sparkrfaithful.png)](screenshots/sparkrfaithful.png)
+ 
+The Spark Context and SQL Context are created and injected into the local environment automatically as `sc` and `sql`.
+
+The same context are shared with the `%spark`, `%sql` and `%pspark` interpreters:
+
+[![backtoscala](screenshots/backtoscala.png)](screenshots/backtoscala.png)
+
+You can also make an ordinary R variable accessible in scala and Python:
+
+[![varr1](screenshots/varr1.png)](screenshots/varr1.png)
+
+And vice versa:
+
+[![varscala](screenshots/varr1.png)](screenshots/varscala.png)
+[![varr2](screenshots/varr2.png)](screenshots/varr2.png)
+
 
 **Caveats**:
 
@@ -113,45 +142,9 @@ The two interpreters share the same environment.  If you define a variable from 
 
 * Using the `%spark.r` interpreter, if you return a data.frame, HTML, or an image, it will dominate the result. So if you execute three commands, and one is `hist()`, all you will see is the histogram, not the results of the other commands. This is a Zeppelin limitation.
 
-* If you return a data.frame (for instance, from calling `head()`) from the `%spark.r` interpreter, it will be parsed by Zeppelin's built-in data visualization system. 
+* If you return a data.frame (for instance, from calling `head()`) from the `%spark.r` interpreter, it will be parsed by Zeppelin's built-in data visualization system.  
 
-## Using SparkR
-
-If `SPARK_HOME` is set, the `SparkR` package will be loaded automatically.
- 
-The Spark Context and SQL Context are created and injected into the local environment automatically as `sc` and `sql`.
-
-That is necessary so that R shares the same Spark and SQL Context with the rest of Zeppelin.
-
-Please, *don't* create your own Spark Context or SQL Context.  You'll end up with multiple jvm's all trying to run Spark backends at the same time. 
-
-## Using the Zeppelin Context to Move Between Languages
-
-Because the R Interpreter and the rest of Zeppelin share the same spark and SQL contexts, spark objects created or manipulated from one language are accessible from the other. 
-
-As of this writing, the easiest way to do this is by defining a temp table, and calling the temp table by name from the second language.
-
-An example of this is shown in the RInterpreter example notebook. 
-
-In addition, the Zeppelin Context allows you to move variables from one interpreter to another.  
-
-The Zeppelin Context is a dictionary of variables shared by multiple Zeppelin interpreters.  You can `put()` a variable into the context from one language, and `get()` it using another language. 
-
-In the R Interpreter, the Zeppelin context can be called with `.z.put(name, object)` and `.z.get(name)`.  
-
-Zeppelin Context support is very beta right now.  It should work for any R variable type that scala can serialize. 
- 
-R variables brought into scala appear as type `Object` and must be coerced to the appropriate type. 
-
-In addition, it *may* be possible to move RDDs directly between R and scala.  This support is beta, and as of now works only sometimes. 
-
-## Interactive Visualizations
-
-`knitr` works.  All static visualization packages that I've tested work. 
-
-For interactive visualization, `googleVis` works and `rCharts` works. 
-
-`htmlwidgets` does not work.  Neither does `shiny` or `ggvis.` 
+*	`htmlwidgets` does not work.  Neither does `shiny` or `ggvis.` 
 
 ## FAQs & Troubleshooting
 
