@@ -28,9 +28,6 @@ import org.scalatest._
  * Created by aelberg on 8/17/15.
  */
 class RInterpreterTest extends FlatSpec {
-  "props" should "include spark.home" in {() =>
-    assert(RInterpreter.props.get("spark.home") != null)
-  }
 
   RContext.resetRcon()
 

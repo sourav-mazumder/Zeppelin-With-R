@@ -113,7 +113,7 @@ You can also make an ordinary R variable accessible in scala and Python:
 
 And vice versa:
 
-[![varscala](screenshots/varr1.png)](screenshots/varscala.png)
+[![varscala](screenshots/varscala.png)](screenshots/varscala.png)
 [![varr2](screenshots/varr2.png)](screenshots/varr2.png)
 
 ## Running the Demo Notebook
