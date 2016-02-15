@@ -42,7 +42,7 @@ For general instructions on installing Zeppelin, see [https://github.com/apache/
 
 Additional requirements for the R interpreter are:
 
- * R 3.1 or later (earlier versions may work, but have not been tested)
+ * Install R 3.1 or later (earlier versions may work, but have not been tested). You need to install this in the same machine where you would be running the Zeppelin process.
  * The `evaluate` R package. 
  
 For full R support, you will also need the following R packages:
@@ -51,6 +51,8 @@ For full R support, you will also need the following R packages:
  * `repr` -- available with `devtools::install_github("IRkernel/repr")`
  * `htmltools` -- required for some interactive plotting
  * `base64enc` -- required to view R base plots
+ 
+To use any R package with this interpreter (for visualization or any other purpose) you should first install that package using REPL shell of R. Then call that package as library("package name") in the R interpreter.
 
 To install this build of Zeppelin with the R interpreter, after installing dependencies, execute:
 
@@ -60,7 +62,9 @@ cd Zeppelin-With-R
 mvn package install -DskipTests
 ```
 
-To run Zeppelin with the R Interpreter, zeppelin must be started with the SPARK_HOME environment variable properly set. The best way to do this is by editing `conf/zeppelin-env.sh`. 
+To run Zeppelin with the R Interpreter, zeppelin must be started with the SPARK_HOME environment variable properly set. The best way to do this is by editing `conf/zeppelin-env.sh`. Here is an example -
+export SPARK_HOME=/home/spark-1.5.2-bin-hadoop2.6 
+
 
 You should also copy `conf/zeppelin-site.xml.template` to `conf/zeppelin-site.xml`.  That will ensure that Zeppelin sees the R Interpreter the first time it starts up. 
 
