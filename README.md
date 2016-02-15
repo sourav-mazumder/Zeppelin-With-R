@@ -52,7 +52,7 @@ For full R support, you will also need the following R packages:
  * `htmltools` -- required for some interactive plotting
  * `base64enc` -- required to view R base plots
  
-For any other R packages you need in future (for visualization and any other purpose) you should first install those packages using REPL shell of R. Then call that package as library("<package nam>") in this R interpreter for Zeppelin.
+To use any R packages with this interpreter (for visualization or any other purpose) you should first install those packages using REPL shell of R. Then call thaose packages as library("package name") in the R interpreter.
 
 To install this build of Zeppelin with the R interpreter, after installing dependencies, execute:
 
